@@ -40,43 +40,47 @@ booktodo/
 
 ### 1️⃣ Clone the repository
 
-````bash
+```
 git clone https://github.com/Siratul804/django-book-todo
 cd django-book-todo
+```
 
 ### 2️⃣ Create virtual environment
-```bash
+
+```
 python3 -m venv venv
 source venv/bin/activate     # macOS / Linux
 venv\Scripts\activate        # Windows
+```
 
 ### 3️⃣ Install dependencies
-```bash
+
+```
 pip install django
-````
+```
 
 ### 4️⃣ Run migrations
 
-```bash
+```
 python manage.py makemigrations
 python manage.py migrate
 ```
 
 ### 5️⃣ Create superuser (optional)
 
-```bash
+```
 python manage.py createsuperuser
 ```
 
 ### 6️⃣ Run development server
 
-```bash
+```
 python manage.py runserver
 ```
 
 Open browser:
 
-```bash
+```
 http://127.0.0.1:8000/
 ```
 
@@ -119,4 +123,4 @@ This project helps understand:
 
 ## 🧑‍💻 Author
 
-Siratul Islam
+@Siratul804
