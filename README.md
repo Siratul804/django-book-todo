@@ -13,18 +13,15 @@ This app allows users to:
 
 Built for learning Django basics.
 
----
-
 ## 🛠 Tech Stack
 
 - Python 3
 - Django
 - SQLite (default Django database)
 
----
-
 ## 📁 Project Structure
 
+```
 booktodo/
 ├── manage.py
 ├── booktodo/
@@ -37,8 +34,7 @@ booktodo/
 │ ├── urls.py
 │ └── migrations/
 └── templates/
-
----
+```
 
 ## 🚀 Setup Instructions
 
@@ -124,8 +120,6 @@ This project helps understand:
 ## 🧑‍💻 Author
 
 Siratul Islam
-
----
 
 ## ✅ 7. Commit README & push
 
