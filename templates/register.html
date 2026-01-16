@@ -1,9 +1,129 @@
+{% extends 'base.html' %} {% block content %}
 
-{% extends 'base.html' %}
-{% block content %}
-<h2>Register</h2>
-<form method="post">{% csrf_token %}
-{{ form.as_p }}
-<button>Register</button>
+<!-- Local styles to keep layout consistent and responsive -->
+<style>
+  .auth-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 480px;
+    width: 100%;
+  }
+  .auth-wrap p {
+    margin: 0;
+  }
+  .auth-wrap input[type="text"],
+  .auth-wrap input[type="password"],
+  .auth-wrap input[type="email"],
+  .auth-wrap input[type="search"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e6e9ef;
+    font-size: 15px;
+  }
+
+  /* 🔴 FIELD ERROR STYLING (IMPORTANT PART) */
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 6px 0;
+    color: #dc2626;
+    font-size: 13px;
+  }
+
+  .errorlist li::before {
+    content: "⚠ ";
+    font-weight: bold;
+  }
+
+  /* Highlight input when error exists */
+  .errorlist + input {
+    border-color: #dc2626;
+  }
+
+  /* 🟦 HELP TEXT (THIS IS WHAT YOU ASKED FOR) */
+  .helptext {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #6b7280; /* soft gray */
+    line-height: 1.4;
+  }
+
+  /* Optional: subtle info icon feel */
+  .helptext::before {
+    content: "ℹ ";
+    font-weight: bold;
+    color: #94a3b8;
+  }
+
+  .form-errors {
+    color: #b91c1c;
+    font-size: 14px;
+  }
+
+  .auth-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .auth-actions .btn-primary {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 0;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .auth-actions .btn-link {
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: transparent;
+    color: #2563eb;
+    border: 1px solid rgba(37, 99, 235, 0.08);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 560px) {
+    .auth-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .auth-actions .btn-primary,
+    .auth-actions .btn-link {
+      width: 100%;
+    }
+  }
+</style>
+
+<h2 style="margin: 0 0 12px 0">Create an account</h2>
+
+{% if form.non_field_errors %}
+<div class="form-errors">{{ form.non_field_errors }}</div>
+{% endif %}
+
+<form method="post" class="auth-wrap" novalidate>
+  {% csrf_token %}
+
+  <!-- keep using form.as_p so backend stays the same -->
+  {{ form.as_p }}
+
+  <div class="auth-actions">
+    <button type="submit" class="btn-primary">Register</button>
+    <a class="btn-link" href="/accounts/login/">Already have an account?</a>
+  </div>
 </form>
+
+<p class="spaced small">
+  By registering you agree to the simple terms of this demo.
+</p>
+
 {% endblock %}

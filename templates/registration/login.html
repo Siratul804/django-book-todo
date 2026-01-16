@@ -1,9 +1,99 @@
+{% extends 'base.html' %} {% block content %}
 
-{% extends 'base.html' %}
-{% block content %}
-<h2>Login</h2>
-<form method="post">{% csrf_token %}
-{{ form.as_p }}
-<button>Login</button>
+<style>
+  .auth-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  .auth-wrap p {
+    margin: 0;
+  }
+
+  .auth-wrap input[type="text"],
+  .auth-wrap input[type="password"],
+  .auth-wrap input[type="email"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e6e9ef;
+    font-size: 15px;
+  }
+
+  /* 🔴 FIELD ERROR STYLING (IMPORTANT PART) */
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 6px 0;
+    color: #dc2626;
+    font-size: 13px;
+  }
+
+  .errorlist li::before {
+    content: "⚠ ";
+    font-weight: bold;
+  }
+
+  /* Highlight input when error exists */
+  .errorlist + input {
+    border-color: #dc2626;
+  }
+
+  .auth-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 6px;
+  }
+
+  .btn-primary {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 0;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-link {
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: transparent;
+    color: #2563eb;
+    border: 1px solid rgba(37, 99, 235, 0.08);
+    text-decoration: none;
+  }
+
+  @media (max-width: 560px) {
+    .auth-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .btn-primary,
+    .btn-link {
+      width: 100%;
+    }
+  }
+</style>
+
+<h2 style="margin: 0 0 12px 0">Welcome back</h2>
+
+<form method="post" class="auth-wrap" novalidate>
+  {% csrf_token %} {{ form.as_p }}
+
+  <div class="auth-actions">
+    <button type="submit" class="btn-primary">Login</button>
+    <a class="btn-link" href="/register/">Create account</a>
+  </div>
 </form>
+
+<p class="spaced small">
+  Forgot password? <a href="/accounts/password_reset/">Reset it here</a>.
+</p>
+
 {% endblock %}

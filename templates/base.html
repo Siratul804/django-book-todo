@@ -1,17 +1,260 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    {% if user.is_authenticated %}
-    <p>Hi {{ user.username }} |</p>
-    <form method="post" action="/accounts/logout/" style="display: inline">
-      {% csrf_token %}
-      <button type="submit">Logout</button>
-    </form>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Book Todo</title>
 
-    {% else %}
-    <a href="/accounts/login/">Login</a> | <a href="/register/">Register</a>
-    {% endif %}
-    <hr />
-    {% block content %}{% endblock %}
+    <style>
+      :root {
+        --bg: #f6f8fb;
+        --card: #ffffff;
+        --muted: #6b7280;
+        --accent: #2563eb;
+        --danger: #ef4444;
+        --success: #10b981;
+        --radius: 10px;
+        --max-width: 860px;
+        --gap: 12px;
+        font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+          sans-serif;
+        color: #0f172a;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+      }
+      .wrap {
+        max-width: var(--max-width);
+        margin: 36px auto;
+        padding: 20px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 20px;
+      }
+      .brand .logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #60a5fa, #2563eb);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12);
+      }
+
+      nav {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        padding: 8px 10px;
+        border-radius: 8px;
+      }
+      nav a:hover {
+        color: var(--accent);
+        background: rgba(37, 99, 235, 0.05);
+      }
+
+      /* Card */
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+      }
+
+      /* form styles */
+      form.inline {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e6e9ef;
+        min-width: 220px;
+        font-size: 15px;
+      }
+      button {
+        padding: 9px 14px;
+        border-radius: 8px;
+        border: 0;
+        background: var(--accent);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid rgba(37, 99, 235, 0.12);
+      }
+      button.danger {
+        background: var(--danger);
+      }
+
+      main {
+        display: block;
+        gap: 14px;
+      }
+
+      .spaced {
+        margin-top: 14px;
+      }
+
+      /* book list */
+      ul.book-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      li.book {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        border: 1px solid #f0f3f7;
+      }
+      .left {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .title {
+        font-weight: 600;
+      }
+      .title.done {
+        text-decoration: line-through;
+        color: var(--muted);
+        opacity: 0.7;
+      }
+      .small {
+        color: var(--muted);
+        font-size: 13px;
+        margin-left: 6px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .actions a,
+      .actions button {
+        text-decoration: none;
+        font-size: 14px;
+        padding: 6px 8px;
+        border-radius: 8px;
+        border: 0;
+        cursor: pointer;
+        background: transparent;
+        color: var(--muted);
+      }
+      .actions a:hover,
+      .actions button:hover {
+        color: var(--accent);
+      }
+
+      footer {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+      }
+
+      /* responsive */
+      @media (max-width: 560px) {
+        .wrap {
+          padding: 12px;
+          margin: 18px auto;
+        }
+        .brand {
+          font-size: 18px;
+        }
+        input[type="text"] {
+          width: 100%;
+          min-width: unset;
+        }
+        form.inline {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .actions {
+          gap: 6px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <a class="brand" href="/">
+          <span class="logo">BT</span>
+          <span>BookTodo</span>
+        </a>
+
+        <nav>
+          {% if user.is_authenticated %}
+          <span style="color: var(--muted)"
+            >Hi <strong>{{ user.username }}</strong></span
+          >
+
+          <form
+            method="post"
+            action="/accounts/logout/"
+            style="display: inline; margin: 0"
+          >
+            {% csrf_token %}
+            <button type="submit" class="secondary" title="Logout">
+              Logout
+            </button>
+          </form>
+          {% else %}
+          <a href="/accounts/login/">Login</a>
+          <a href="/register/">Register</a>
+          {% endif %}
+        </nav>
+      </header>
+
+      <main>
+        <div class="card">{% block content %}{% endblock %}</div>
+
+        <footer>Simple Book Todo · Built with Django</footer>
+      </main>
+    </div>
   </body>
 </html>
