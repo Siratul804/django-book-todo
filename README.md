@@ -120,11 +120,3 @@ This project helps understand:
 ## 🧑‍💻 Author
 
 Siratul Islam
-
-## ✅ 7. Commit README & push
-
-```bash
-git add README.md
-git commit -m "Add README with setup instructions"
-git push
-```
