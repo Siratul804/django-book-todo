@@ -28,7 +28,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
-ROOT_URLCONF = 'booktodo.urls'
+ROOT_URLCONF = 'booktodo-project.urls'
 
 TEMPLATES = [
     {
@@ -46,7 +46,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'booktodo.wsgi.application'
+WSGI_APPLICATION = 'booktodo-project.wsgi.application'
 
 DATABASES = {
     'default': {
